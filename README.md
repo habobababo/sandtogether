@@ -16,6 +16,7 @@ Pick the game branch in Steam: **Sandustry → Properties → Betas**. All playe
 
 | Mod version | Game version / Steam branch |
 |-------------|-----------------------------|
+| **v0.9.288-beta** (this fork) | **0.6.0** (also still works on 0.5.2-0.5.7) |
 | **v0.9.162** (current, Workshop) | **0.5.5** (branch `0.5.5 with mod support`, same build as the default public version) |
 | [v0.9.161-beta](https://github.com/IronBamBam1990/sandtogether/archive/refs/tags/v0.9.161-beta.zip) | **0.5.2** (beta branch `mods`) — unzip, run `install.bat` from `dist-package` |
 
