@@ -1,3 +1,35 @@
+## 0.9.288-beta
+
+**Compatibility with Sandustry 0.6.0.** The 0.6.0 update re-minified the bundle and broke 36 of the 42 hooks,
+most visibly digging: the client's shovel/DN hook no longer matched, so the client (whose simulation is paused)
+dug nothing and nothing was forwarded to the host.
+
+`supportedVersions` gains `"0.6.0"`. Every hook got an additional `game 0.6.0` variant appended at the END of
+its variant chain, so 0.5.2-0.5.7 keep matching exactly as before. Verified against the clean 0.6.0 bundle:
+42/42 anchors match once, no ambiguous matches; the patched bundle parses (`node --check`), and patching a
+clean bundle and an already partially patched one gives byte-identical output.
+
+Notable 0.6.0 changes handled by hand (not just renamed identifiers):
+
+- **dig hook (DN)**: `DN` is now `T`, a sibling `M` with the same signature exists (the non-queued variant),
+  so the old fuzzy shape was ambiguous - the anchor now includes the mutation-queue loop head.
+- **player-dig flag**: the shovel function now *returns* the excavation profile
+  (`return (0,d.DN)(...),a`), the `_pd` wrapper keeps that return value.
+- **entities single-init/drop**: 0.6.0 keeps an id->entity index map next to the list; `_entInit` registers
+  the entity there, `_entDrop` removes sprite + light + list entry + index entries without emitting
+  `entity:removed` (works for id-only stubs too).
+- **pipes**: the pipe module was rewritten (typed pipe definitions). `_pipeApi` now maps to
+  connect=`Se`, refresh=`Ue`, relink=`Ne`, at=`Q`, path=`Ce` (k7), run=`Ie` (cZ), sprite=`Z`;
+  `_pipeRun` hooks the new `Te` (was `me`).
+- **build previews**: the draw module moved (`f.gJ`/`a.gJ`), single-place preview and the direction arrow
+  were re-anchored on the new code paths.
+
+Host-side dig replay is unchanged: `FH.patterns.excavate` still exists in 0.6.0 (`FH.excavation` no longer has
+`excavate`, the lookup falls through to `patterns`). All `FH.*` APIs the mod calls were checked to exist.
+
+Not yet tested in a live session on 0.6.0 - the world mirror itself (cell buffers, element types) was not
+changed by this release. Both players need 0.9.288-beta (install from this repo, the Workshop still has 0.9.287).
+
 ## 0.9.287-beta
 
 **Maintainer verification before release.** Merged as PR #21 and checked on the real 0.5.7 build:
